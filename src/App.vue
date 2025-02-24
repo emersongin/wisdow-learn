@@ -3,11 +3,9 @@
 </script>
 
 <template>
-  <div data-theme="light">
-    <DefaultLayout>
-      <router-view></router-view>
-    </DefaultLayout>
-  </div>
+  <DefaultLayout>
+    <router-view></router-view>
+  </DefaultLayout>
 </template>
 
 <style>

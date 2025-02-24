@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import axios from 'axios';
+
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore, type loginDataType } from '@/stores/auth';
 
 const username = ref('');
 const password = ref('');
@@ -10,17 +10,13 @@ const router = useRouter();
 const authStore = useAuthStore();
 
 const handleSubmit = async (event: Event) => {
-  event.preventDefault();
-  const loginData = {
-    username: username.value,
-    password: password.value,
-  };
   try {
-    const response = await axios.post('http://localhost:8080/auth/login', loginData);
-    const data = response.data;
-
-    if (data.token) {
-      authStore.login(data.token);
+    event.preventDefault();
+    const loginData: loginDataType = {
+      username: username.value,
+      password: password.value,
+    };
+    if (await authStore.login(loginData)) {
       router.push({ name: 'dashboard' });
     } else {
       throw new Error('Token not found in response');
