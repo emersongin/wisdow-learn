@@ -1,33 +1,22 @@
 <script setup lang="ts">
-  import { inject, ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  import LoginForm from '@/models/LoginForm';
+  import { ref } from 'vue';
+  import LoginForm, { type LoginFormData } from '@/models/LoginForm';
+
+  const emit = defineEmits(['submit']);
 
   const form = ref(new LoginForm());
-  const router = useRouter();
-  const authStore = inject('authStore') as any;
+  form.value.onSubmit((formData: LoginFormData) => {
+    emit('submit', formData);
+  });
 
-  const handleSubmit = async (event: Event) => {
-    try {
-      event.preventDefault();
-      const success = await authStore.login({ 
-        username: form.value.username, 
-        password: form.value.password 
-      });
-      if (success) {
-        router.push({ name: 'dashboard' });
-      } else {
-        throw new Error('Token not found in response');
-      }
-
-    } catch (error) {
-      console.error('Erro ao fazer login:', error);
-    }
+  const submit = async (event: Event) => {
+    event.preventDefault();
+    form.value.submit();
   }
 </script>
 
 <template>
-  <form action="#" method="post" @submit="handleSubmit">
+  <form action="#" method="post" @submit="submit">
     <div class="field">
       <p class="control">
         <input class="input" type="text" placeholder="Username" v-model="form.username" />
