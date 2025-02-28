@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import axios from 'axios';
-import type LoginFormData from '@/models/LoginForm';
+import { type UserData } from '@/types/LoginFormTypes';
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref(localStorage.getItem('token') || '');
 
-  const login = async (loginData: LoginFormData): Promise<boolean> => {
-    const response = await axios.post('http://localhost:8080/auth/login', loginData);
+  const login = async (userData: UserData): Promise<boolean> => {
+    const response = await axios.post('http://localhost:8080/auth/login', userData);
     const data = response.data;
     if (data && data.token) {
       token.value = data.token;

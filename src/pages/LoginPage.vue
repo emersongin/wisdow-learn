@@ -2,14 +2,14 @@
 import { inject } from 'vue';
 import { useRouter } from 'vue-router';
 import LoginForm from '@/components/LoginForm.vue';
-import type LoginFormData from '@/types/LoginFormData';
+import { type UserData } from '@/types/LoginFormTypes';
 
 const router = useRouter();
 const authStore = inject('authStore') as any;
 
-const login = async (formData: LoginFormData) => {
+const login = async (userData: UserData) => {
   try {
-    const success = await authStore.login(formData);
+    const success = await authStore.login(userData);
     if (success) {
       router.push({ name: 'dashboard' });
     } else {

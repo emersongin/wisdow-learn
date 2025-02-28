@@ -1,17 +1,18 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import LoginForm from '@/models/LoginForm';
-  import type LoginFormData from '@/types/LoginFormData';
+  import { type UserData, LoginFormStatus } from '@/types/LoginFormTypes';
 
   const emit = defineEmits(['submit']);
 
   const form = ref(new LoginForm());
-  form.value.onSubmit((formData: LoginFormData) => {
-    emit('submit', formData);
+  form.value.onSubmit((userData: UserData) => {
+    emit('submit', userData);
   });
 
   const submit = async (event: Event) => {
     event.preventDefault();
+    form.value.loading();
     form.value.submit();
   }
 </script>
@@ -34,7 +35,9 @@
     </div>
     <div class="field mt-6">
       <p class="control">
-        <button type="submit" class="button is-link has-background-primary is-responsive is-fullwidth is-rounded">
+        <button 
+          type="submit" 
+          :class="`button is-link has-background-primary is-responsive is-fullwidth is-rounded ${form.status === LoginFormStatus.Loading ? 'is-loading' : 'is-normal'}`">
           Sign In
         </button>
       </p>
