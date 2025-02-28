@@ -1,5 +1,5 @@
 <template>
-  <main class="container is-fluid">
+  <main class="is-fluid has-background-grey-darker">
     <slot></slot>
   </main>
 </template>

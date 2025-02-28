@@ -1,9 +1,5 @@
 import EventBus, { type Listener } from '@/models/EventBus';
-
-export type LoginFormData = {
-  username: string;
-  password: string;
-};
+import type LoginFormData from '@/types/LoginFormData';
 
 export default class LoginForm extends EventBus {
   public username: string;
