@@ -8,16 +8,16 @@ const router = useRouter();
 const authStore = inject('authStore') as any;
 
 const login = async (userData: UserData) => {
-  try {
-    const success = await authStore.login(userData);
-    if (success) {
-      router.push({ name: 'dashboard' });
-    } else {
-      throw new Error('Token not found in response');
-    }
-  } catch (error) {
-    console.error('Erro ao fazer login:', error);
+  const success = await authStore.login(userData);
+  if (success) {
+    router.push({ name: 'dashboard' });
+    return;
   }
+  throw new Error('Token not found in response');
+}
+
+const error = (err) => {
+  console.log(err);
 }
 
 </script>
@@ -30,7 +30,7 @@ const login = async (userData: UserData) => {
       </div>
       <div class="column is-flex is-align-items-center">
         <div class="box is-flex-grow-1">
-          <LoginForm @submit="login"></LoginForm>
+          <LoginForm :submit="login" @error="error"></LoginForm>
         </div>
       </div>
     </div> 

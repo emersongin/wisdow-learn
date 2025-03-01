@@ -28,12 +28,8 @@ describe('LoginFormModel', () => {
     form.username = input.username;
     form.password = input.password;
 
-    expect(() => form.validate()).toThrowError('Username not found');
-
-    form.submit();
-    
+    expect(() => form.submit()).toThrowError('Username not found');
     expect(form.status).toBe(LoginFormStatus.Error);
-    expect(form.errorMessage).toBe('Username not found');
   });
 
   it('should throw an error when validate form and password not found', () => {
@@ -43,11 +39,7 @@ describe('LoginFormModel', () => {
     form.username = input.username;
     form.password = input.password;
 
-    expect(() => form.validate()).toThrowError('Password not found');
-
-    form.submit();
-
+    expect(() => form.submit()).toThrowError('Password not found');
     expect(form.status).toBe(LoginFormStatus.Error);
-    expect(form.errorMessage).toBe('Password not found');
   });
 });

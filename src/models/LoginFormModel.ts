@@ -1,7 +1,7 @@
 import EventBus, { type Listener } from '@/models/EventBus';
 import type UserData from '@/types/UserDataType';
 
-export enum  LoginFormStatus {
+export enum LoginFormStatus {
   Ative = 'ative',
   Loading = 'loading',
   Error = 'error'
@@ -11,7 +11,6 @@ export default class LoginFormModel extends EventBus {
   public username: string;
   public password: string;
   public status: LoginFormStatus = LoginFormStatus.Ative;
-  public errorMessage: string = '';
 
   constructor(username: string = '', password: string = '') {
     super();
@@ -28,24 +27,25 @@ export default class LoginFormModel extends EventBus {
   }
 
   submit(): void {
-    try {
-      this.validate();
-      this.emit('submit', {
-        username: this.username,
-        password: this.password
-      } as UserData);
-    } catch (error: Error | unknown) {
-      this.errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      this.status = LoginFormStatus.Error; 
-    }
+    this.validate();
+    this.emit('submit', {
+      username: this.username,
+      password: this.password
+    } as UserData);
   }
 
   validate(): void {
     if (this.username === '') {
+      this.error();
       throw new Error('Username not found');
     }
     if (this.password === '') {
+      this.error();
       throw new Error('Password not found');
     }
+  }
+
+  error() {
+    this.status = LoginFormStatus.Error; 
   }
 }
