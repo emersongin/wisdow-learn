@@ -2,7 +2,7 @@
 import { inject } from 'vue';
 import { useRouter } from 'vue-router';
 import LoginForm from '@/components/LoginForm.vue';
-import { type UserData } from '@/types/LoginFormTypes';
+import { type UserData } from '@/enums/LoginFormStatus';
 
 const router = useRouter();
 const authStore = inject('authStore') as any;

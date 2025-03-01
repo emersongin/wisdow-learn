@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from 'vue';
-  import LoginForm from '@/models/LoginForm';
-  import { type UserData, LoginFormStatus } from '@/types/LoginFormTypes';
+  import LoginForm from '@/models/LoginFormModel';
+  import { type UserData, LoginFormStatus } from '@/enums/LoginFormStatus';
 
   const emit = defineEmits(['submit']);
 
