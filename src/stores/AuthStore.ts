@@ -3,6 +3,12 @@ import { ref } from 'vue';
 import axios from 'axios';
 import type UserData from '@/types/UserDataType';
 
+export interface AuthStore {
+  token: string;
+  login(userData: UserData): Promise<boolean>;
+  logout(): void;
+}
+
 export const useAuthStore = defineStore('auth', () => {
   const token = ref(localStorage.getItem('token') || '');
 

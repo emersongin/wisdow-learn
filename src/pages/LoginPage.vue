@@ -1,25 +1,9 @@
 <script setup lang="ts">
-import { inject } from 'vue';
-import { useRouter } from 'vue-router';
 import LoginForm from '@/components/LoginForm.vue';
-import { type UserData } from '@/enums/LoginFormStatus';
 
-const router = useRouter();
-const authStore = inject('authStore') as any;
-
-const login = async (userData: UserData) => {
-  const success = await authStore.login(userData);
-  if (success) {
-    router.push({ name: 'dashboard' });
-    return;
-  }
-  throw new Error('Token not found in response');
-}
-
-const error = (err) => {
+const error = (err: string) => {
   console.log(err);
 }
-
 </script>
 
 <template>
@@ -30,7 +14,7 @@ const error = (err) => {
       </div>
       <div class="column is-flex is-align-items-center">
         <div class="box is-flex-grow-1">
-          <LoginForm :submit="login" @error="error"></LoginForm>
+          <LoginForm @error="error"></LoginForm>
         </div>
       </div>
     </div> 

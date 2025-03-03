@@ -2,15 +2,16 @@ import EventBus, { type Listener } from '@/models/EventBus';
 import type UserData from '@/types/UserDataType';
 
 export enum LoginFormStatus {
-  Ative = 'ative',
+  Idle = 'idle',
   Loading = 'loading',
-  Error = 'error'
+  ErrorUsernameNotFound = 'error_username_not_found',
+  ErrorPassswordNotFound = 'error_password_not_found'
 }
 
 export default class LoginFormModel extends EventBus {
   public username: string;
   public password: string;
-  public status: LoginFormStatus = LoginFormStatus.Ative;
+  public status: LoginFormStatus = LoginFormStatus.Idle;
 
   constructor(username: string = '', password: string = '') {
     super();
@@ -20,10 +21,6 @@ export default class LoginFormModel extends EventBus {
 
   onSubmit(listener: Listener<UserData>): () => void {
     return this.on('submit', listener);
-  }
-
-  loading() {
-    this.status = LoginFormStatus.Loading;
   }
 
   submit(): void {
@@ -36,16 +33,44 @@ export default class LoginFormModel extends EventBus {
 
   validate(): void {
     if (this.username === '') {
-      this.error();
+      this.errorUsernameNotFound();
       throw new Error('Username not found');
     }
     if (this.password === '') {
-      this.error();
+      this.errorPasswordNotFound();
       throw new Error('Password not found');
     }
   }
 
-  error() {
-    this.status = LoginFormStatus.Error; 
+  idle() {
+    this.status = LoginFormStatus.Idle;
+  }
+
+  loading() {
+    this.status = LoginFormStatus.Loading;
+  }
+
+  errorUsernameNotFound() {
+    this.status = LoginFormStatus.ErrorUsernameNotFound; 
+  }
+
+  errorPasswordNotFound() {
+    this.status = LoginFormStatus.ErrorPassswordNotFound;
+  }
+
+  isIdle(): boolean {
+    return this.status === LoginFormStatus.Idle;
+  }
+
+  isLoading(): boolean {
+    return this.status === LoginFormStatus.Loading;
+  }
+
+  isErrorUsernameNotFound(): boolean {
+    return this.status === LoginFormStatus.ErrorUsernameNotFound
+  }
+
+  isErrorPasswordNotFound(): boolean {
+    return this.status === LoginFormStatus.ErrorPassswordNotFound;
   }
 }
