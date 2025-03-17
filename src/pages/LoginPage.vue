@@ -1,20 +1,48 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import LoginForm from '@/components/LoginForm.vue';
 
-const error = (erroMessage: string) => {
-  console.log(err);
+const isModalActive = ref<boolean>(false);
+const modalContent = ref<string>('Mensagem de erro padrão.');
+
+const catchError = (erroMessage: string) => {
+  modalContent.value = erroMessage;
+  isModalActive.value = true;
+}
+const closeModal = () => {
+  modalContent.value = '';
+  isModalActive.value = false;
 }
 </script>
 
 <template>
   <section class="hero columns is-fullheight">
+    
+    <div :class="`modal ${isModalActive ? 'is-active' : ''}`">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Alert</p>
+          <button id="close-button" class="delete" aria-label="close" @click="closeModal"></button>
+        </header>
+        <section class="modal-card-body">
+          {{ modalContent }}
+        </section>
+        <footer class="modal-card-foot">
+          <div class="buttons is-flex is-right is-justify-content-flex-end">
+            <button id="ok-button" class="button is-success" @click="closeModal">Ok</button>
+          </div>
+        </footer>
+      </div>
+    </div>
+
     <div class="section is-fullheight columns column">
       <div class="column is-two-thirds">
         <!-- image -->
       </div>
       <div class="column is-flex is-align-items-center">
         <div class="box is-flex-grow-1">
-          <LoginForm @error="error"></LoginForm>
+          <LoginForm id="login-form" @error="catchError"></LoginForm>
         </div>
       </div>
     </div> 

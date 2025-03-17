@@ -32,7 +32,7 @@ export const useAuthStore = defineStore('auth', () => {
       .catch(function(error) {
         const data = error.response.data;
         const errorMessage = data.message;
-        const errorContent = data.erros.username || data.erros.password;
+        const errorContent = data.erros?.username || data.erros?.password;
         return {
           errorMessage: `${errorMessage}: ${errorContent}`
         };
