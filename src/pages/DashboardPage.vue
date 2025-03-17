@@ -6,7 +6,7 @@
   const authStore = useAuthStore();
 
   const logout = () => {
-    authStore.logout();
+    authStore.signOut();
     router.push({ name: 'login' });
   };
 </script>
