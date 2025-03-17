@@ -9,11 +9,15 @@ export interface AuthStore {
   logout(): void;
 }
 
+export interface SignInResult {
+  successMessage: string;
+  errorMessage: string;
+}
+
 export const useAuthStore = defineStore('auth', () => {
   const token = ref(localStorage.getItem('token') || '');
 
-  const login = async (userData: UserData): Promise<boolean> => {
-    let result = false;
+  const signIn = async (userData: UserData): Promise<Partial<SignInResult>> => {
     await axios.post('http://localhost:8080/auth/login', userData)
       .then(function(response) {
         const data = response.data;
@@ -21,18 +25,25 @@ export const useAuthStore = defineStore('auth', () => {
           token.value = data.token;
           localStorage.setItem('token', data.token);
         }
-        result = true;
+        return {
+          successMessage: 'Successfully logged in',
+        }; 
       })
-      .catch(function() {
-        result = false;
-      }); 
-    return result;
+      .catch(function(error) {
+        const data = error.response.data;
+        const errorMessage = data.message;
+        const errorContent = data.erros.username || data.erros.password;
+        return {
+          errorMessage: `${errorMessage}: ${errorContent}`
+        };
+      });
+    return { errorMessage: 'Invalid credentials' };
   };
 
-  const logout = () => {
+  const signOut = () => {
     token.value = '';
     localStorage.removeItem('token');
   };
 
-  return { token, login, logout };
+  return { token, signIn, signOut };
 });
