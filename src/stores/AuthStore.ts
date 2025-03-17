@@ -5,7 +5,7 @@ import type UserData from '@/types/UserDataType';
 
 export interface AuthStore {
   token: string;
-  signIn(userData: UserData): Promise<boolean>;
+  signIn(userData: UserData): Promise<Partial<SignInResult>>;
   signOut(): void;
 }
 
@@ -20,9 +20,6 @@ export const useAuthStore = defineStore('auth', () => {
   const signIn = async (userData: UserData): Promise<Partial<SignInResult>> => {
     try {
       const response = await axios.post('http://localhost:8080/auth/login', userData);
-
-      console.log(response.data);
-
       const data = response.data;
       if (data && data.token) {
         token.value = data.token;
@@ -32,11 +29,17 @@ export const useAuthStore = defineStore('auth', () => {
         successMessage: 'Successfully logged in',
       }; 
     } catch (error: any) {
-      const data = error.response.data;
-      const errorMessage = data.message;
-      const errorContent = data.erros?.username || data.erros?.password || '';
+      const statusCode = error?.status;
+      if (statusCode) {
+        const data = error.response.data;
+        const errorMessage = data.message || '';
+        const errorContent = data.erros?.username || data.erros?.password || '';
+        return {
+          errorMessage: `${errorMessage} ${errorContent}`
+        };
+      }
       return {
-        errorMessage: `${errorMessage} ${errorContent}`
+        errorMessage: error.message
       };
     }
   };
