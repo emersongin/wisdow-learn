@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import LoginForm from '@/components/LoginForm.vue';
 
-const error = (err: string) => {
+const error = (erroMessage: string) => {
   console.log(err);
 }
 </script>
