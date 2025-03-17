@@ -2,27 +2,26 @@
 import { ref } from 'vue';
 import { inject } from 'vue';
 import { useRouter } from 'vue-router';
-import LoginForm from '@/models/LoginFormModel';
+import LoginFormModel from '@/models/LoginFormModel';
 import type UserData from '@/types/UserDataType';
-import { type AuthStore } from '@/stores/AuthStore';
+import { type AuthStore, type SignInResult } from '@/stores/AuthStore';
 
 const router = useRouter();
 const authStore = inject('authStore') as AuthStore;
 const emit = defineEmits(['error']);
 
-const login = async (userData: UserData) => {
-  const success = await authStore.login(userData);
-  if (success) {
+const submitLogin = async (userData: UserData) => {
+  const { successMessage, errorMessage } = await authStore.signIn(userData) as Partial<SignInResult>;
+  if (successMessage) {
     router.push({ name: 'dashboard' });
     return;
   }
-  // verificar os tipos de erros da API e tratar aqui, talvez um erro mais informativo que uma mensagem com severidade.
   form.value.idle();
-  emit('error', 'Token not found in response');
+  emit('error', errorMessage);
 }
 
-const form = ref(new LoginForm());
-form.value.onSubmit(login);
+const form = ref(new LoginFormModel());
+form.value.onSubmit(submitLogin);
 
 const clickSubmit = async (event: Event) => {
   try {
