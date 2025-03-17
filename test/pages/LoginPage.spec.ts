@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils';
 import LoginPage from '../../src/pages/LoginPage.vue';
 import { type AuthStore } from '../../src/stores/AuthStore';
 import { createRouter, createWebHistory, Router } from 'vue-router';
+import i18n from '../../src/locales';
 
 describe('LoginPage', () => {
     let router: Router;
@@ -31,7 +32,7 @@ describe('LoginPage', () => {
     const wrapper = mount(LoginPage, {
       global: { 
         provide: { authStore },
-        plugins: [ router ],
+        plugins: [ router, i18n ],
       },
       stubs: {
         LoginForm: {
