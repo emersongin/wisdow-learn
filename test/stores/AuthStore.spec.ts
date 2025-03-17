@@ -1,0 +1,1 @@
+// fazer testes para validar quando não estiver com API ativa e quando receber respostas da API
