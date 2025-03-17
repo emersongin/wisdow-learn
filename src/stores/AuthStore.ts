@@ -5,8 +5,8 @@ import type UserData from '@/types/UserDataType';
 
 export interface AuthStore {
   token: string;
-  login(userData: UserData): Promise<boolean>;
-  logout(): void;
+  signIn(userData: UserData): Promise<boolean>;
+  signOut(): void;
 }
 
 export interface SignInResult {
