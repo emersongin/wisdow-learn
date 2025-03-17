@@ -41,7 +41,11 @@ const closeModal = () => {
         <!-- cover image -->
       </div>
       <div class="column is-flex is-align-items-center mx-5">
-        <div class="box is-flex-grow-1 p-5">
+        <div class="is-flex-grow-1 p-5">
+          <div class="mb-6">
+            <h1 class="title is-3">{{ $t('company.name') }}</h1>
+            <h4 class="subtitle is-6 has-text-grey">{{ $t('company.description') }}</h4>
+          </div>
           <LoginForm id="login-form" @error="catchError"></LoginForm>
         </div>
       </div>

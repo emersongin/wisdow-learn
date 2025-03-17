@@ -37,11 +37,11 @@ const clickSubmit = async (event: Event) => {
 <template>
   <form action="#" method="post" @submit="clickSubmit">
     <div class="field">
-      <label class="label has-text-black-ter">Username</label>
+      <label class="label has-text-black-ter">{{ $t('loginform.username.label') }}</label>
       <p class="control">
         <input 
           type="text" 
-          placeholder="Enter your username" v-model="form.username"
+          :placeholder="$t('loginform.username.placeholder')" v-model="form.username"
           :class="`input ${form.isErrorUsernameNotFound() ? 'is-danger' : ''}`" 
           :disabled="form.isLoading()"
         >
@@ -49,11 +49,11 @@ const clickSubmit = async (event: Event) => {
       </p>
     </div>
     <div class="field mt-3">
-      <label class="label has-text-black-ter">Password</label>
+      <label class="label has-text-black-ter">{{ $t('loginform.password.label') }}</label>
       <p class="control">
         <input 
           type="password" 
-          placeholder="Provide your password" v-model="form.password"
+          :placeholder="$t('loginform.password.placeholder')" v-model="form.password"
           :class="`input ${form.isErrorPasswordNotFound() ? 'is-danger' : ''}`"
           :disabled="form.isLoading()"
           >

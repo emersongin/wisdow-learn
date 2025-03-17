@@ -1,0 +1,16 @@
+{
+  "company": {
+    "name": "Bem-vindo ao GestEdu",
+    "description": "Inteligente e moderno para gestão educacional."
+  },
+  "loginform": {
+    "username": {
+      "label": "Nome de usuário",
+      "placeholder": "Digite seu nome de usuário"
+    },
+    "password": {
+      "label": "Senha",
+      "placeholder": "Digite sua senha"
+    }
+  }
+}
