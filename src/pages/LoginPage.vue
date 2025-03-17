@@ -36,12 +36,12 @@ const closeModal = () => {
       </div>
     </div>
 
-    <div class="section is-fullheight columns column">
-      <div class="column is-two-thirds">
-        <!-- image -->
+    <div class="section is-fullheight columns column p-0">
+      <div class="column is-two-thirds" style="background: url('/images/mainentrace.jpg') no-repeat center center; background-size: cover;">
+        <!-- cover image -->
       </div>
-      <div class="column is-flex is-align-items-center">
-        <div class="box is-flex-grow-1">
+      <div class="column is-flex is-align-items-center mx-5">
+        <div class="box is-flex-grow-1 p-5">
           <LoginForm id="login-form" @error="catchError"></LoginForm>
         </div>
       </div>

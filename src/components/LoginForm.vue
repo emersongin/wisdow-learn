@@ -11,7 +11,7 @@ const authStore = inject('authStore') as AuthStore;
 const emit = defineEmits(['error']);
 
 const submitLogin = async (userData: UserData) => {
-  const { successMessage, errorMessage } = await authStore.signIn(userData) as Partial<SignInResult>;
+  const { successMessage, errorMessage } = await authStore.signIn(userData) as SignInResult;
   if (successMessage) {
     router.push({ name: 'dashboard' });
     return;

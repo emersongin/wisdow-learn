@@ -1,5 +1,5 @@
 <template>
-  <main class="is-fluid has-background-grey-darker">
+  <main class="hero is-fluid is-fullheight">
     <slot></slot>
   </main>
 </template>
