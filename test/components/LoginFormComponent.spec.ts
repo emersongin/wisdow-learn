@@ -1,32 +1,35 @@
 import { describe, it, vi, expect, beforeEach  } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { createRouter, createWebHistory } from 'vue-router';
+import { type AuthStore } from '../../src/stores/AuthStore';
+import { createRouter, createWebHistory, Router } from 'vue-router';
 import LoginForm from '../../src/components/LoginForm.vue';
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes: [
-    {
-      path: '/',
-      component: { template: '<div></div>' },
-    },
-  ]
-});
 
 describe('LoginFormComponent', () => {
   let input = { username: '', password: '' };
+  let router: Router;
+  let authStore: AuthStore;
 
   beforeEach(() => {
     input = { username: 'test', password: 'test' };
+    router = createRouter({
+      history: createWebHistory(),
+      routes: [
+        {
+          path: '/',
+          component: { template: '<div></div>' },
+        },
+      ]
+    });
+    authStore = {
+      token: 'mock-token',
+      signIn: vi.fn(),
+      signOut: vi.fn()
+    };
   });
 
   it('should redirect user when login success', async () => {
     const successMessage = 'Successfully logged in';
-    const authStore = {
-      token: vi.fn(),
-      signIn: vi.fn().mockReturnValue({ successMessage }),
-      signOut: vi.fn()
-    };
+    authStore.signIn = vi.fn().mockReturnValue({ successMessage });
     router.push = vi.fn();
     const wrapper = mount(LoginForm, {
       global: { 
@@ -34,29 +37,28 @@ describe('LoginFormComponent', () => {
         plugins: [ router ],
       },
     });
+
     await wrapper.find('input[type="text"]').setValue(input.username);
     await wrapper.find('input[type="password"]').setValue(input.password);
     await wrapper.find('form').trigger('submit');
+
     expect(wrapper.vm.$router.push).toHaveBeenCalledWith({ name: 'dashboard' });
   });
 
   it('should emit an error message when username invalid', async () => {
-    const errorMessage = 'Username or Password not found';
-    const authStore = {
-      token: vi.fn(),
-      signIn: vi.fn().mockReturnValue({ errorMessage }),
-      signOut: vi.fn()
-    };
+    const errorMessage = 'Error message found';
+    authStore.signIn = vi.fn().mockReturnValue({ errorMessage });
     const wrapper = mount(LoginForm, {
-      props: { error: (erroMessage) => erroMessage },
       global: { 
         provide: { authStore },
         plugins: [ router ],
       },
     });
+
     await wrapper.find('input[type="text"]').setValue(input.username);
     await wrapper.find('input[type="password"]').setValue(input.password);
     await wrapper.find('form').trigger('submit');
+
     expect(wrapper.emitted().error).toBeTruthy();
     expect(wrapper.emitted().error[0]).toEqual([ errorMessage ]);
   });
