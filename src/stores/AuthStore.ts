@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import type UserData from '@/types/UserDataType';
 
 export interface AuthStore {
@@ -28,18 +28,19 @@ export const useAuthStore = defineStore('auth', () => {
       return {
         successMessage: 'Successfully logged in',
       }; 
-    } catch (error: any) {
-      const statusCode = error?.status;
-      if (statusCode) {
-        const data = error.response.data;
-        const errorMessage = data.message || '';
-        const errorContent = data.erros?.username || data.erros?.password || '';
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          const data = error.response.data;
+          const errorMessage = data.message;
+          return { errorMessage };
+        }
         return {
-          errorMessage: `${errorMessage} ${errorContent}`
+          errorMessage: error.message
         };
       }
       return {
-        errorMessage: error.message
+        errorMessage: 'An error occurred'
       };
     }
   };

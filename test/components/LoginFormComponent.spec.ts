@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils';
 import { type AuthStore } from '../../src/stores/AuthStore';
 import { createRouter, createWebHistory, Router } from 'vue-router';
 import LoginForm from '../../src/components/LoginForm.vue';
+import i18n from '../../src/locales';
 
 describe('LoginFormComponent', () => {
   let input = { username: '', password: '' };
@@ -34,7 +35,7 @@ describe('LoginFormComponent', () => {
     const wrapper = mount(LoginForm, {
       global: { 
         provide: { authStore },
-        plugins: [ router ],
+        plugins: [ router, i18n ],
       },
     });
 
@@ -51,7 +52,7 @@ describe('LoginFormComponent', () => {
     const wrapper = mount(LoginForm, {
       global: { 
         provide: { authStore },
-        plugins: [ router ],
+        plugins: [ router, i18n ],
       },
     });
 
